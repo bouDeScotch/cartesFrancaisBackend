@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 import sqlite3
 
 app = FastAPI()
@@ -25,13 +25,15 @@ async def get_cards():
 	return {"cards": cards}
 
 
-@app.get("/api/v1/cards/{id}")
-async def get_card(id: int):
+@app.get("/api/v1/cards/{identifiant}")
+async def get_card(identifiant: int):
 	conn = sqlite3.connect('cartes.db')
 	cursor = conn.cursor()
-	cursor.execute('SELECT * FROM cartes WHERE id = ?', (id,))
+	cursor.execute('SELECT * FROM cartes WHERE id = ?', (identifiant,))
 	row = cursor.fetchone()
 	conn.close()
+	if row is None:
+		raise HTTPException(status_code=404, detail="Carte non trouvée")
 	return {
 		"id": row[0],
 		"nom": row[1],
