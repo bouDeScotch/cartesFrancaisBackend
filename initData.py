@@ -32,6 +32,7 @@ def supprimer_carte(id):
 	conn.commit()
 	conn.close()
 
+
 def print_all():
 	conn = sqlite3.connect('cartes.db')
 	cursor = conn.cursor()
