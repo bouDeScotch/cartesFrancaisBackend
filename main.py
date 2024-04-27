@@ -4,15 +4,6 @@ import sqlite3
 app = FastAPI()
 
 
-@app.get("/")
-async def root():
-	return {"message": "Hello World"}
-
-
-@app.get("/hello/{name}")
-async def say_hello(name: str):
-	return {"message": f"Hello {name}"}
-
 @app.get("/api/v1/cards")
 async def get_cards():
 	conn = sqlite3.connect('cartes.db')
@@ -32,6 +23,7 @@ async def get_cards():
 		})
 	conn.close()
 	return {"cards": cards}
+
 
 @app.get("/api/v1/cards/{id}")
 async def get_card(id: int):
